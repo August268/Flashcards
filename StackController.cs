@@ -18,6 +18,15 @@ namespace Flashcards
             return [.. connection.Query<Stack>(sql)];
         }
 
+        public Stack GetStack(string id)
+        {
+            IDbConnection connection = new SqlConnection(_connectionString);
+
+            string sql = $"SELECT * FROM Stacks WHERE Id='{id}'";
+
+            return connection.QueryFirstOrDefault<Stack>(sql);
+        }
+
         public void CreateStack(string name)
         {
             IDbConnection connection = new SqlConnection(_connectionString);
