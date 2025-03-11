@@ -9,14 +9,18 @@ string _connectionString = ConfigurationManager.AppSettings.Get("ConnectionStrin
 
 UserInput input = new();
 
+// Start the specified local db instance
+// Create a local db instance if the specified local db doesn't exist
 LocalDBInstance.CreateLocalDBInstance(_localDBInstance);
 
 using (IDbConnection connection = new SqlConnection(_connectionString))
 {
+    // Create a database in the local db instance
     string sql_create_database = "CREATE DATABASE Flashcards";
 
     connection.Execute(sql_create_database);
 
+    // Create tables in the database
     string sql = @"
         USE Flashcards
 
@@ -39,6 +43,8 @@ using (IDbConnection connection = new SqlConnection(_connectionString))
     connection.Execute(sql);
 }
 
-
-
+// Show the main menu
 input.ShowMainMenu();
+
+// Stop the local db from running
+LocalDBInstance.StopLocalDBInstance("FlashcardsDB");
